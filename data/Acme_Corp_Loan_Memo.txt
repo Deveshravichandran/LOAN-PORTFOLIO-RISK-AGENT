@@ -1,0 +1,15 @@
+CREDIT MEMO: Acme Corp
+Date: Jan 1st, 2025
+Industry: Manufacturing
+Loan Amount: $10,000,000
+
+Business Overview:
+Acme Corp is a legacy manufacturer of heavy machinery. They have stable revenues but are facing pressure from cheaper overseas imports. 
+
+Key Risk Factors:
+1. Supply Chain Dependency: Acme relies heavily on steel imports from Taiwan. Any disruption there could severely impact their margins.
+2. Labor Relations: They have a unionized workforce. Previous strikes have caused massive revenue hits.
+3. Liquidity: They carry a high debt load and need to maintain an Operating Margin above 10% to service interest payments comfortably.
+
+Recommendation:
+Approved for $10M facility. Monitor their supply chain costs and any labor disputes closely, as these are the primary drivers of potential default.

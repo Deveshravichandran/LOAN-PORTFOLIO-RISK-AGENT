@@ -1,0 +1,9 @@
+Company,Industry,Loan Amount,Key Covenants
+Acme Corp,Manufacturing,$10M,"Debt/EBITDA < 3.0, Operating Margin > 10%"
+Stark Industries,Defense,$50M,"Must maintain $5M cash on hand, no new lawsuits"
+CaratLane,Jewelry,$15M,"Must maintain strong quarterly sales and minimize gold supply chain disruptions"
+Zocket.ai,AI Software,$5M,"Must maintain high user growth rate and keep server compute costs under limit"
+ONGC,Energy/Oil & Gas,$800M,"Must hit global oil production quotas, no environmental fines or spills"
+Reliance Industries,Telecom/Retail,$1B,"Must maintain Jio subscriber growth and steady operational profits"
+HDFC Bank,Banking,$250M,"Must maintain high asset quality and low non-performing assets (NPA)"
+Infosys,IT Services,$100M,"Must maintain North American client retention and strong operating margins"
