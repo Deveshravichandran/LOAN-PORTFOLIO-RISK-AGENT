@@ -2,10 +2,14 @@
 Automated Evaluation Framework for the Portfolio Monitoring Agent.
 This suite ensures the AI model maintains high reliability and prevents regressions.
 """
+import os
+from dotenv import load_dotenv
 import pandas as pd
 from langchain_community.chat_models import ChatOllama
 from langchain_core.prompts import PromptTemplate
 import json
+
+load_dotenv()
 
 EVAL_DATASET = [
     {
@@ -32,7 +36,7 @@ def run_evals():
     to measure accuracy and decision-making quality.
     """
     import os
-    llama_model = os.getenv("LLAMA_MODEL", "gemma2:2b")
+    llama_model = os.getenv("LLAMA_MODEL", "gemma2:tiny")
     llm = ChatOllama(model=llama_model, temperature=0.0)
     
     prompt_template = """    You are an expert Credit Risk Analyst. 
@@ -85,9 +89,9 @@ def run_evals():
         is_match = predicted_status == item['expected_status']
         if is_match:
             correct += 1
-            print(f"✅ PASS: Expected {item['expected_status']}, Got {predicted_status}")
+            print(f"[PASS] Expected {item['expected_status']}, Got {predicted_status}")
         else:
-            print(f"❌ FAIL: Expected {item['expected_status']}, Got {predicted_status}")
+            print(f"[FAIL] Expected {item['expected_status']}, Got {predicted_status}")
             
         print(f"   Reasoning: {reasoning}")
             

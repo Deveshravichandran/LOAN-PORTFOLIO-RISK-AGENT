@@ -3,10 +3,13 @@ Module for managing document indexing and vector-based retrieval.
 Uses FAISS and Ollama embeddings for memory management.
 """
 import os
+from dotenv import load_dotenv
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
+
+load_dotenv()
 
 def build_vector_store(data_dir="data", index_path="faiss_index"):
     """
@@ -36,7 +39,7 @@ def build_vector_store(data_dir="data", index_path="faiss_index"):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     chunks = text_splitter.split_documents(documents)
     
-    llama_model = os.getenv("LLAMA_MODEL", "gemma2:2b")
+    llama_model = os.getenv("LLAMA_MODEL", "gemma2:tiny")
     embeddings = OllamaEmbeddings(model=llama_model)
     vector_store = FAISS.from_documents(chunks, embeddings)
     vector_store.save_local(index_path)
@@ -54,7 +57,7 @@ def get_vector_store(index_path="faiss_index"):
     Returns:
         FAISS: The loaded vector store object, or None if it doesn't exist.
     """
-    llama_model = os.getenv("LLAMA_MODEL", "gemma2:2b")
+    llama_model = os.getenv("LLAMA_MODEL", "gemma2:tiny")
     embeddings = OllamaEmbeddings(model=llama_model)
     if os.path.exists(index_path):
         return FAISS.load_local(index_path, embeddings, allow_dangerous_deserialization=True)

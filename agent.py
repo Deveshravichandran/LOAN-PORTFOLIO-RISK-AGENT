@@ -2,12 +2,16 @@
 Main Orchestration Module for the Risk Monitoring Agent.
 Handles the end-to-end loop: Retrieval (RAG), Search (Tools), and Analysis (LLM).
 """
+import os
+from dotenv import load_dotenv
 import json
 import pandas as pd
 from langchain_community.chat_models import ChatOllama
 from langchain_core.prompts import PromptTemplate
 from tools import search_company_news
 from vector_store import get_vector_store
+
+load_dotenv()
 
 def analyze_portfolio(portfolio_path="data/portfolio.csv", index_path="faiss_index"):
     """
@@ -23,10 +27,8 @@ def analyze_portfolio(portfolio_path="data/portfolio.csv", index_path="faiss_ind
     df = pd.read_csv(portfolio_path, encoding="utf-8")
     vector_store = get_vector_store(index_path)
 
-    # Use a lower-memory model by default; configurable via environment variable.
-    # 8b can exceed available RAM on constrained environments (e.g., <= 4.5 GB).
-    import os
-    llama_model = os.getenv("LLAMA_MODEL", "gemma2:2b")
+    # Use a low-memory model (gemma2:tiny, ~1.8GB RAM) to prevent memory allocation errors
+    llama_model = os.getenv("LLAMA_MODEL", "gemma2:tiny")
     llm = ChatOllama(model=llama_model, temperature=0.0)
     
     analysis_results = []
