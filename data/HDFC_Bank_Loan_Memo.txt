@@ -1,0 +1,15 @@
+CREDIT MEMO: HDFC Bank
+Date: Jan 15th, 2025
+Industry: Banking / Financial Services
+Loan Amount: $250,000,000
+
+Business Overview:
+HDFC Bank is India's largest private sector bank. It has a robust retail franchise and maintains high asset quality through disciplined lending.
+
+Key Risk Factors:
+1. Interest Rate Risk: Fluctuations in RBI repo rates can impact net interest margins (NIM).
+2. Credit Quality: Any uptick in non-performing assets (NPA) in the retail or SME sector.
+3. Regulatory Changes: Changes in capital adequacy requirements or digital banking norms.
+
+Recommendation:
+Approved for $250M facility. Monitor Gross NPA ratios and Capital to Risk-weighted Assets Ratio (CRAR).

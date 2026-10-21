@@ -1,3 +1,7 @@
+"""
+Main Orchestration Module for the Risk Monitoring Agent.
+Handles the end-to-end loop: Retrieval (RAG), Search (Tools), and Analysis (LLM).
+"""
 import json
 import pandas as pd
 from langchain_community.chat_models import ChatOllama
@@ -6,11 +10,24 @@ from tools import search_company_news
 from vector_store import get_vector_store
 
 def analyze_portfolio(portfolio_path="data/portfolio.csv", index_path="faiss_index"):
-    df = pd.read_csv(portfolio_path)
-    vector_store = get_vector_store(index_path)
+    """
+    Analyzes a loan portfolio by comparing internal credit memos with real-time news news.
     
-    # Using the local Ollama model llama3:8b as requested/used previously
-    llm = ChatOllama(model="llama3:8b", temperature=0.0)
+    Args:
+        portfolio_path (str): The path to the CSV file containing portfolio data.
+        index_path (str): The path where the FAISS vector index is stored.
+        
+    Returns:
+        list: A collection of analysis results for each company.
+    """
+    df = pd.read_csv(portfolio_path, encoding="utf-8")
+    vector_store = get_vector_store(index_path)
+
+    # Use a lower-memory model by default; configurable via environment variable.
+    # 8b can exceed available RAM on constrained environments (e.g., <= 4.5 GB).
+    import os
+    llama_model = os.getenv("LLAMA_MODEL", "gemma2:2b")
+    llm = ChatOllama(model=llama_model, temperature=0.0)
     
     analysis_results = []
     
@@ -38,21 +55,14 @@ def analyze_portfolio(portfolio_path="data/portfolio.csv", index_path="faiss_ind
     prompt = PromptTemplate(template=prompt_template, input_variables=["company", "industry", "covenants", "memo_context", "news_context"])
     chain = prompt | llm
     
-    print("\n--- Starting Portfolio Monitoring Agent ---\n")
     for _, row in df.iterrows():
         company = row['Company']
-        print(f"Analyzing {company}...")
         
-        # 1. Fetch Original Memo
         memo_docs = vector_store.similarity_search(f"Credit Memo {company}", k=1)
         memo_context = memo_docs[0].page_content if memo_docs else "No memo found."
         
-        # 2. Fetch Latest News Tool
-        print(f"  -> Fetching latest news for {company} via DuckDuckGo...")
         news_context = search_company_news.invoke({"company_name": company})
         
-        # 3. LLM Agent Analysis
-        print(f"  -> Running Risk Agent Analysis...")
         result = chain.invoke({
             "company": company,
             "industry": row['Industry'],
@@ -61,7 +71,6 @@ def analyze_portfolio(portfolio_path="data/portfolio.csv", index_path="faiss_ind
             "news_context": news_context
         })
         
-        # Attempt to parse JSON safely
         try:
             clean_output = result.content.strip().strip('```json').strip('```').strip()
             parsed = json.loads(clean_output)
@@ -76,7 +85,6 @@ def analyze_portfolio(portfolio_path="data/portfolio.csv", index_path="faiss_ind
             "Status": status,
             "Reasoning": reasoning
         })
-        print(f"  [RESULT] {status}: {reasoning}\n")
         
     return analysis_results
 

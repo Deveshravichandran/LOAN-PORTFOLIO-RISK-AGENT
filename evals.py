@@ -1,10 +1,12 @@
+"""
+Automated Evaluation Framework for the Portfolio Monitoring Agent.
+This suite ensures the AI model maintains high reliability and prevents regressions.
+"""
 import pandas as pd
 from langchain_community.chat_models import ChatOllama
 from langchain_core.prompts import PromptTemplate
 import json
 
-# Golden Dataset: (Company, Mock_News, Expected_Status)
-# This proves to the hiring manager that you understand how to rigorously test LLMs for analytical tasks.
 EVAL_DATASET = [
     {
         "company": "Acme Corp",
@@ -12,7 +14,7 @@ EVAL_DATASET = [
         "covenants": "Debt/EBITDA < 3.0, Operating Margin > 10%",
         "memo_context": "Acme relies heavily on steel imports from Taiwan. High debt load, needs >10% margin.",
         "mock_news": "Taiwan steel exports halted due to strike. Acme Corp announces they expect a 5% drop in operating margins this quarter.",
-        "expected_status": "RED" # RED because margin will drop below 10%
+        "expected_status": "RED"
     },
     {
         "company": "Stark Industries",
@@ -20,15 +22,20 @@ EVAL_DATASET = [
         "covenants": "Must maintain $5M cash on hand, no new lawsuits",
         "memo_context": "Prone to lawsuits. Must keep $5M cash.",
         "mock_news": "Stark Industries wins new $200M government contract. CEO Tony Stark donates $1M to charity.",
-        "expected_status": "GREEN" # Good news, no lawsuits, lots of cash
+        "expected_status": "GREEN"
     }
 ]
 
 def run_evals():
-    llm = ChatOllama(model="llama3:8b", temperature=0.0)
+    """
+    Executes a series of mock scenarios against the agent's analytical chain 
+    to measure accuracy and decision-making quality.
+    """
+    import os
+    llama_model = os.getenv("LLAMA_MODEL", "gemma2:2b")
+    llm = ChatOllama(model=llama_model, temperature=0.0)
     
-    prompt_template = """
-    You are an expert Credit Risk Analyst. 
+    prompt_template = """    You are an expert Credit Risk Analyst. 
     Analyze the company based on their Original Credit Memo and the Latest News.
     Determine if their Post-Disbursement Risk status should be GREEN (Safe), YELLOW (Monitor), or RED (High Risk of Breach/Default).
 
@@ -51,9 +58,10 @@ def run_evals():
     prompt = PromptTemplate(template=prompt_template, input_variables=["company", "industry", "covenants", "memo_context", "news_context"])
     chain = prompt | llm
     
-    print("--- Running Eval Suite against Golden Dataset ---")
     correct = 0
     total = len(EVAL_DATASET)
+    
+    print("\n--- Running Eval Suite against Golden Dataset ---")
     
     for item in EVAL_DATASET:
         print(f"\nEvaluating: {item['company']} Scenario")

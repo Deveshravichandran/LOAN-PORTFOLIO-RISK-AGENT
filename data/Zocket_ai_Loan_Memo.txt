@@ -1,0 +1,15 @@
+CREDIT MEMO: Zocket.ai
+Date: Jan 8th, 2025
+Industry: AI Software / AdTech
+Loan Amount: $5,000,000
+
+Business Overview:
+Zocket is a generative AI startup specializing in automated ad creation for small businesses. Their platform simplifies digital marketing through AI-driven content generation.
+
+Key Risk Factors:
+1. Burn Rate: High compute costs (GPU/Cloud) can deplete cash reserves faster than revenue growth.
+2. Market Competition: Intense competition from big techs like Meta and Google as they integrate AI into their ad managers.
+3. Retention: High churn in the SMB segment could affect lifetime value with their current pricing model.
+
+Recommendation:
+Approved for $5M facility. Monitor Monthly Recurring Revenue (MRR) and Gross Margins (after compute costs).
