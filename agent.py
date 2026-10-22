@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 import json
 import pandas as pd
-from langchain_community.chat_models import ChatOllama
+from langchain_ollama import ChatOllama
 from langchain_core.prompts import PromptTemplate
 from tools import search_company_news
 from vector_store import get_vector_store

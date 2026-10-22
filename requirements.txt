@@ -7,3 +7,4 @@ faiss-cpu
 duckduckgo-search
 pandas
 streamlit
+python-dotenv

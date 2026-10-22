@@ -5,7 +5,7 @@ This suite ensures the AI model maintains high reliability and prevents regressi
 import os
 from dotenv import load_dotenv
 import pandas as pd
-from langchain_community.chat_models import ChatOllama
+from langchain_ollama import ChatOllama
 from langchain_core.prompts import PromptTemplate
 import json
 
